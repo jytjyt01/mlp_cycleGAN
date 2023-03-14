@@ -218,9 +218,9 @@ for epoch in range(opt.epoch, opt.n_epochs):
 
     # Save models checkpoints
     if epoch % 20 == 19:
-        torch.save(netG_A2B.state_dict(), 'outputHW/{}_netG_A2B.pth'.format(epoch))
-        torch.save(netG_B2A.state_dict(), 'outputHW/{}_netG_B2A.pth'.format(epoch))
-        torch.save(netD_A.state_dict(), 'outputHW/{}_netD_A.pth'.format(epoch))
-        torch.save(netD_B.state_dict(), 'outputHW/{}_netD_B.pth'.format(epoch))
+        torch.save(netG_A2B.state_dict(), 'output/{}_netG_A2B.pth'.format(epoch))
+        torch.save(netG_B2A.state_dict(), 'output/{}_netG_B2A.pth'.format(epoch))
+        torch.save(netD_A.state_dict(), 'output/{}_netD_A.pth'.format(epoch))
+        torch.save(netD_B.state_dict(), 'output/{}_netD_B.pth'.format(epoch))
 
 ###################################
