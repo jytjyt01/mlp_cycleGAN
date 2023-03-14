@@ -55,14 +55,14 @@ if opt.cuda:
     netD_B.to(torch.device('cuda'))
 
     # 改,cuda
-    netG_A2B = nn.DataParallel(netG_A2B, device_ids=[0, 1, 2])
-    netG_B2A = nn.DataParallel(netG_B2A, device_ids=[0, 1, 2])
-    netD_A = nn.DataParallel(netD_A, device_ids=[0, 1, 2])
-    netD_B = nn.DataParallel(netD_B, device_ids=[0, 1, 2])
-    # netG_A2B = nn.DataParallel(netG_A2B, device_ids=[0])
-    # netG_B2A = nn.DataParallel(netG_B2A, device_ids=[0])
-    # netD_A = nn.DataParallel(netD_A, device_ids=[0])
-    # netD_B = nn.DataParallel(netD_B, device_ids=[0])
+    # netG_A2B = nn.DataParallel(netG_A2B, device_ids=[0, 1, 2])
+    # netG_B2A = nn.DataParallel(netG_B2A, device_ids=[0, 1, 2])
+    # netD_A = nn.DataParallel(netD_A, device_ids=[0, 1, 2])
+    # netD_B = nn.DataParallel(netD_B, device_ids=[0, 1, 2])
+    netG_A2B = nn.DataParallel(netG_A2B, device_ids=[0])
+    netG_B2A = nn.DataParallel(netG_B2A, device_ids=[0])
+    netD_A = nn.DataParallel(netD_A, device_ids=[0])
+    netD_B = nn.DataParallel(netD_B, device_ids=[0])
 
 netG_A2B.apply(weights_init_normal)
 netG_B2A.apply(weights_init_normal)
@@ -106,11 +106,11 @@ transforms_ = [transforms.Resize(int(opt.size * 1.12), Image.BICUBIC),
                transforms.RandomHorizontalFlip(),
                transforms.ToTensor(),  # 归一化到[0, 1] 维度转换, 例如[128, 128, 1] --> [1, 128, 128]
                transforms.Normalize((0.5,), (0.5,))]  # 将[0, 1]归一化到[-1, 1]  mean, std
-# dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, unaligned=True),
-#                         batch_size=opt.batchSize, shuffle=True, num_workers=opt.n_cpu)
-# 改,cuda
 dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, unaligned=True),
-                        batch_size=opt.batchSize, shuffle=True, num_workers=0)
+                        batch_size=opt.batchSize, shuffle=True, num_workers=opt.n_cpu)
+# 改,cuda
+# dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, unaligned=True),
+#                         batch_size=opt.batchSize, shuffle=True, num_workers=0)
 
 # Loss plot
 logger = Logger(opt.n_epochs, len(dataloader))
@@ -215,7 +215,7 @@ for epoch in range(opt.epoch, opt.n_epochs):
     lr_scheduler_D_B.step()
 
     # Save models checkpoints
-    if epoch % 50 == 49:
+    if epoch % 20 == 19:
         torch.save(netG_A2B.state_dict(), 'output/{}_netG_A2B.pth'.format(epoch))
         torch.save(netG_B2A.state_dict(), 'output/{}_netG_B2A.pth'.format(epoch))
         torch.save(netD_A.state_dict(), 'output/{}_netD_A.pth'.format(epoch))
