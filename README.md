@@ -58,11 +58,11 @@ python -m fid2 path/real/folder path/output/folder
 ```
 如：
 ```python
-python -m calculate_fid datasets/1001/ output/images/
+python -m calculate_fid datasets/1001/test/A output/images/A
 ```
 计算lpips:
 ```python
-python calculate_lpips.py --real_path datasets/1001/ --fake_path datasets/images/
+python calculate_lpips.py --real_path datasets/1001/test/A --fake_path output/images/A
 ```
 
 gnt转png：

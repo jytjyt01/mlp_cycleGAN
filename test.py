@@ -18,8 +18,8 @@ parser.add_argument('--output_nc', type=int, default=3, help='number of channels
 parser.add_argument('--size', type=int, default=128, help='size of the data (squared assumed)')
 parser.add_argument('--cuda', action='store_true', help='use GPU computation')
 parser.add_argument('--n_cpu', type=int, default=8, help='number of cpu threads to use during batch generation')
-parser.add_argument('--generator_A2B', type=str, default='output/199_netG_A2B.pth', help='A2B generator checkpoint file')
-parser.add_argument('--generator_B2A', type=str, default='output/199_netG_B2A.pth', help='B2A generator checkpoint file')
+parser.add_argument('--generator_A2B', type=str, default='output/99_netG_A2B.pth', help='A2B generator checkpoint file')
+parser.add_argument('--generator_B2A', type=str, default='output/99_netG_B2A.pth', help='B2A generator checkpoint file')
 opt = parser.parse_args()
 print(opt)
 
@@ -78,13 +78,18 @@ for i, batch in enumerate(dataloader):
     real_A = input_A.copy_(batch['A'])
     real_B = input_B.copy_(batch['B'])
 
+    filename_A = dataloader.dataset.files_A[i]
+    filename_B = dataloader.dataset.files_B[i]
+    filename_A = filename_A.rsplit("/", 1)
+    filename_B = filename_B.rsplit("/", 1)
+
     # Generate output
     fake_B = 0.5*(netG_A2B(real_A).data + 1.0)
     fake_A = 0.5*(netG_B2A(real_B).data + 1.0)
 
     # Save image files
-    save_image(fake_A, 'output/images/A/%04d.png' % (i+1))
-    save_image(fake_B, 'output/images/B/%04d.png' % (i+1))
+    save_image(fake_A, 'output/images/A/%s' % filename_A[1])
+    save_image(fake_B, 'output/images/B/%s' % filename_B[1])
 
     sys.stdout.write('\rGenerated images %04d of %04d' % (i+1, len(dataloader)))
 
