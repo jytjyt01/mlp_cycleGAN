@@ -39,8 +39,8 @@ if torch.cuda.is_available() and not opt.cuda:
 
 ###### Definition of variables ######
 # Networks
-# 改
-# 两个生成器A2B, B2A和两个判别器A, B，以及对应的优化器（优化器的设置保证了只更新生成器或判别器，不会互相影响）
+# two generators A2B, B2A and two discriminators A, B, and the corresponding optimizers
+# (the optimizers are set to ensure that only the generators or discriminators are updated and do not affect each other)
 netG_A2B = Generator(opt.input_nc, opt.output_nc)
 netG_B2A = Generator(opt.output_nc, opt.input_nc)
 netD_A = Discriminator(opt.input_nc)
@@ -56,7 +56,6 @@ if opt.cuda:
     # netD_B.cuda()
     netD_B.to(torch.device('cuda'))
 
-    # 改,cuda
     # netG_A2B = nn.DataParallel(netG_A2B, device_ids=[0, 1, 2])
     # netG_B2A = nn.DataParallel(netG_B2A, device_ids=[0, 1, 2])
     # netD_A = nn.DataParallel(netD_A, device_ids=[0, 1, 2])
@@ -110,7 +109,7 @@ transforms_ = [transforms.Resize(int(opt.size * 1.12), Image.BICUBIC),
                transforms.Normalize((0.5,), (0.5,))]  # 将[0, 1]归一化到[-1, 1]  mean, std
 dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, unaligned=True),
                         batch_size=opt.batchSize, shuffle=True, num_workers=opt.n_cpu)
-# 改,cuda
+
 # dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, unaligned=True),
 #                         batch_size=opt.batchSize, shuffle=True, num_workers=0)
 
@@ -158,10 +157,6 @@ for epoch in range(opt.epoch, opt.n_epochs):
 
         loss_G.backward(retain_graph=True)
         optimizer_G.step()
-
-        # 改
-        # loss_G.backward()
-        # optimizer_G.step()
 
         ###################################
 

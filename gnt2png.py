@@ -81,7 +81,7 @@ def main(path, source_path, ratioA, ratioB):
             bitmap = bitmap.reshape([height, width])
             bitmap = resize_image(bitmap)
             bitmaplist.append(bitmap)
-            # 改
+
             # ch = bytearray.fromhex(str(hex(tag_code))[2:]).decode('gb2312')
             ch = bytearray.fromhex(str(hex(tag_code))[2:]).decode('gb18030')
 

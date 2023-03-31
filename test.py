@@ -58,7 +58,7 @@ input_B = Tensor(opt.batchSize, opt.output_nc, opt.size, opt.size)
 # Dataset loader
 transforms_ = [ transforms.ToTensor(),
                 transforms.Normalize((0.5,), (0.5,)) ]
-# 改
+
 # dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, mode='test'),
 #                         batch_size=opt.batchSize, shuffle=False, num_workers=opt.n_cpu)
 dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, mode='test'),
@@ -68,10 +68,10 @@ dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, mode
 ###### Testing######
 
 # Create output dirs if they don't exist
-if not os.path.exists('output2/images/A'):
-    os.makedirs('output2/images/A')
-if not os.path.exists('output2/images/B'):
-    os.makedirs('output2/images/B')
+if not os.path.exists('exp_output/images/A'):
+    os.makedirs('exp_output/images/A')
+if not os.path.exists('exp_output/images/B'):
+    os.makedirs('exp_output/images/B')
 
 for i, batch in enumerate(dataloader):
     # Set model input
@@ -88,8 +88,8 @@ for i, batch in enumerate(dataloader):
     fake_A = 0.5*(netG_B2A(real_B).data + 1.0)
 
     # Save image files
-    save_image(fake_A, 'output2/images/A/%s' % filename_A[1])
-    save_image(fake_B, 'output2/images/B/%s' % filename_B[1])
+    save_image(fake_A, 'exp_output/images/A/%s' % filename_A[1])
+    save_image(fake_B, 'exp_output/images/B/%s' % filename_B[1])
 
     sys.stdout.write('\rGenerated images %04d of %04d' % (i+1, len(dataloader)))
 
