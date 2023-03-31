@@ -18,8 +18,8 @@ parser.add_argument('--output_nc', type=int, default=3, help='number of channels
 parser.add_argument('--size', type=int, default=128, help='size of the data (squared assumed)')
 parser.add_argument('--cuda', action='store_true', help='use GPU computation')
 parser.add_argument('--n_cpu', type=int, default=8, help='number of cpu threads to use during batch generation')
-parser.add_argument('--generator_A2B', type=str, default='output/99_netG_A2B.pth', help='A2B generator checkpoint file')
-parser.add_argument('--generator_B2A', type=str, default='output/99_netG_B2A.pth', help='B2A generator checkpoint file')
+parser.add_argument('--generator_A2B', type=str, default='output2/99_netG_A2B.pth', help='A2B generator checkpoint file')
+parser.add_argument('--generator_B2A', type=str, default='output2/99_netG_B2A.pth', help='B2A generator checkpoint file')
 opt = parser.parse_args()
 print(opt)
 
@@ -68,10 +68,10 @@ dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, mode
 ###### Testing######
 
 # Create output dirs if they don't exist
-if not os.path.exists('output/images/A'):
-    os.makedirs('output/images/A')
-if not os.path.exists('output/images/B'):
-    os.makedirs('output/images/B')
+if not os.path.exists('output2/images/A'):
+    os.makedirs('output2/images/A')
+if not os.path.exists('output2/images/B'):
+    os.makedirs('output2/images/B')
 
 for i, batch in enumerate(dataloader):
     # Set model input
@@ -88,8 +88,8 @@ for i, batch in enumerate(dataloader):
     fake_A = 0.5*(netG_B2A(real_B).data + 1.0)
 
     # Save image files
-    save_image(fake_A, 'output/images/A/%s' % filename_A[1])
-    save_image(fake_B, 'output/images/B/%s' % filename_B[1])
+    save_image(fake_A, 'output2/images/A/%s' % filename_A[1])
+    save_image(fake_B, 'output2/images/B/%s' % filename_B[1])
 
     sys.stdout.write('\rGenerated images %04d of %04d' % (i+1, len(dataloader)))
 
